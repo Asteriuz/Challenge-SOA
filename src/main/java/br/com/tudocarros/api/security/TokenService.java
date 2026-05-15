@@ -14,7 +14,6 @@ import java.time.ZoneOffset;
 @Service
 public class TokenService {
 
-    // Puxa a senha secreta que configuramos no application-dev.properties
     @Value("${api.security.token.secret}")
     private String secret;
 

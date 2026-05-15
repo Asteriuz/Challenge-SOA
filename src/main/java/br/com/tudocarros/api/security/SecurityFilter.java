@@ -26,18 +26,18 @@ public class SecurityFilter extends OncePerRequestFilter {
     private UserDetailsService userDetailsService;
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
+            FilterChain filterChain) throws ServletException, IOException {
         var token = this.recoverToken(request);
-        
+
         if (token != null) {
-            var subject = tokenService.validateToken(token); // Pega o nome do usuário de dentro do token
-            
+            var subject = tokenService.validateToken(token);
+
             if (!subject.isEmpty()) {
-                // Busca o usuário na memória (ou no banco, no futuro)
                 UserDetails user = userDetailsService.loadUserByUsername(subject);
-                
-                // Força a autenticação no Spring Security
-                var authentication = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
+
+                var authentication =
+                        new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             }
         }
@@ -46,7 +46,8 @@ public class SecurityFilter extends OncePerRequestFilter {
 
     private String recoverToken(HttpServletRequest request) {
         var authHeader = request.getHeader("Authorization");
-        if (authHeader == null) return null;
+        if (authHeader == null)
+            return null;
         return authHeader.replace("Bearer ", "");
     }
 }
