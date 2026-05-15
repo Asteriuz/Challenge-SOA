@@ -1,4 +1,4 @@
-package br.com.tudocarros.api.dto;
+package br.com.tudocarros.api.dto.request;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;

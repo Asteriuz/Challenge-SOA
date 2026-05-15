@@ -1,64 +1,54 @@
 package br.com.tudocarros.api.controller;
 
-import br.com.tudocarros.api.domain.AppUser;
-import br.com.tudocarros.api.dto.CadastroDTO;
-import br.com.tudocarros.api.dto.LoginDTO;
-import br.com.tudocarros.api.exception.UserAlreadyExistsException;
-import br.com.tudocarros.api.repository.AppUserRepository;
-import br.com.tudocarros.api.security.TokenService;
+import br.com.tudocarros.api.dto.request.CadastroDTO;
+import br.com.tudocarros.api.dto.request.LoginDTO;
+import br.com.tudocarros.api.dto.response.MensagemResponseDTO;
+import br.com.tudocarros.api.dto.response.TokenResponseDTO;
+import br.com.tudocarros.api.service.AuthService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
-import java.util.Map;
-
 @RestController
-@Tag(name = "Autenticação", description = "Endpoints de autenticação")
+@Tag(name = "Autenticação")
 @RequestMapping("/api/v1/auth")
 public class AuthController {
 
     @Autowired
-    private AuthenticationManager authenticationManager;
+    private AuthService authService;
 
-    @Autowired
-    private TokenService tokenService;
-
-    @Autowired
-    private AppUserRepository appUserRepository;
-
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-
+    @Operation(summary = "Realiza o login do usuário", description = "Autentica o usuário com base no username e senha fornecidos e retorna um token JWT válido para acesso aos recursos protegidos da API.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Login bem-sucedido, token JWT retornado"),
+            @ApiResponse(responseCode = "400", description = "Dados de login inválidos (ex: campos vazios)", content = @Content),
+            @ApiResponse(responseCode = "401", description = "Autenticação falhou: Usuário ou senha incorretos", content = @Content)
+    })
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody @Valid LoginDTO data) {
-        var usernamePassword = new UsernamePasswordAuthenticationToken(data.username(), data.password());
-        var auth = this.authenticationManager.authenticate(usernamePassword);
-        var token = tokenService.generateToken(auth.getName());
-        return ResponseEntity.ok(Map.of("token", token));
+    public ResponseEntity<TokenResponseDTO> login(@RequestBody @Valid LoginDTO data) {
+        var response = authService.login(data);
+        return ResponseEntity.ok(response);
     }
 
+    @Operation(summary = "Realiza o cadastro de um novo usuário", description = "Cria um novo usuário no banco de dados e retorna uma mensagem de confirmação.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Usuário cadastrado com sucesso"),
+            @ApiResponse(responseCode = "400", description = "Dados inválidos (ex: campos vazios ou senha curta)", content = @Content),
+            @ApiResponse(responseCode = "409", description = "Conflito: O username informado já existe no sistema", content = @Content)
+    })
     @PostMapping("/cadastro")
-    public ResponseEntity<?> cadastro(@RequestBody @Valid CadastroDTO data) {
-        if (appUserRepository.findByUsername(data.username()).isPresent()) {
-            throw new UserAlreadyExistsException("Já existe um usuário com esse username");
-        }
-
-        AppUser user = new AppUser(
-                data.username(),
-                passwordEncoder.encode(data.password()),
-                "USER"
-        );
-        appUserRepository.save(user);
-
-        return ResponseEntity.status(HttpStatus.CREATED).body(Map.of("mensagem", "Usuário cadastrado com sucesso"));
+    public ResponseEntity<MensagemResponseDTO> cadastro(@RequestBody @Valid CadastroDTO data) {
+        var response = authService.cadastro(data);
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 }
