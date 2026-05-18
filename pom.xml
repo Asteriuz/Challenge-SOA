@@ -8,11 +8,11 @@
 		<version>4.0.5</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>br.com.tudocarros</groupId>
-	<artifactId>api</artifactId>
+	<groupId>br.com.blindspot</groupId>	
+	<artifactId>blindspot</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>api</name>
-	<description>API para o projeto TudoCarros</description>
+	<name>BlindSpot</name>
+	<description>API para o projeto BlindSpot</description>
 	<url/>
 	<licenses>
 		<license/>
