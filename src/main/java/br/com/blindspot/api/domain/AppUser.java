@@ -18,17 +18,18 @@ public class AppUser {
     @Column(name = "USERNAME", nullable = false, unique = true, length = 100)
     private String username;
 
-    @Column(name = "PASSWORD_HASH", nullable = false, length = 255)
-    private String passwordHash;
+    @Column(name = "SENHA_HASH", nullable = false, length = 255)
+    private String senhaHash;
 
     @Column(name = "ROLE_NAME", nullable = false, length = 50)
     private String roleName;
 
-    protected AppUser() {}
+    protected AppUser() {
+    }
 
     public AppUser(String username, String passwordHash, String roleName) {
         this.username = username;
-        this.passwordHash = passwordHash;
+        this.senhaHash = passwordHash;
         this.roleName = roleName;
     }
 
@@ -40,8 +41,8 @@ public class AppUser {
         return username;
     }
 
-    public String getPasswordHash() {
-        return passwordHash;
+    public String getSenhaHash() {
+        return senhaHash;
     }
 
     public String getRoleName() {

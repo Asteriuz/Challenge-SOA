@@ -28,7 +28,7 @@ public class DatabaseUserDetailsService implements UserDetailsService {
         var appUser = appUserRepository.findByUsername(username).orElseThrow(
                 () -> new UsernameNotFoundException("Usuário não encontrado: " + username));
 
-        return new User(appUser.getUsername(), appUser.getPasswordHash(),
+        return new User(appUser.getUsername(), appUser.getSenhaHash(),
                 List.of(new SimpleGrantedAuthority(
                         "ROLE_" + appUser.getRoleName().toUpperCase(Locale.ROOT))));
     }

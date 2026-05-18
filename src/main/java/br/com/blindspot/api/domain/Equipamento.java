@@ -20,11 +20,10 @@ public class Equipamento {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ID_EQUIPAMENTO")
-    private Long idEquipamento;
+    private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "ID_CATEGORIA", nullable = false, foreignKey = @ForeignKey(name = "FK_EQUIP_CATEG"))
+    @JoinColumn(name = "CATEGORIA_ID", nullable = false, foreignKey = @ForeignKey(name = "FK_EQUIP_CATEG"))
     private CategoriaEquip categoria;
 
     @Column(name = "DESCRICAO", nullable = false, length = 150)
@@ -40,8 +39,8 @@ public class Equipamento {
         this.descricao = descricao;
     }
 
-    public Long getIdEquipamento() {
-        return idEquipamento;
+    public Long getId() {
+        return id;
     }
 
     public CategoriaEquip getCategoria() {

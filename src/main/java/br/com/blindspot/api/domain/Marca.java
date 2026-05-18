@@ -13,36 +13,35 @@ public class Marca {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ID_MARCA")
-    private Long idMarca;
+    private Long id;
 
-    @Column(name = "NOME_MARCA", nullable = false, length = 100)
-    private String nomeMarca;
+    @Column(name = "NOME", nullable = false, length = 100)
+    private String nome;
 
     @Column(name = "URL_LOGO", length = 255)
     private String urlLogo;
 
     protected Marca() {}
 
-    public Marca(String nomeMarca, String urlLogo) {
-        this.nomeMarca = nomeMarca;
+    public Marca(String nome, String urlLogo) {
+        this.nome = nome;
         this.urlLogo = urlLogo;
     }
 
-    public Long getIdMarca() {
-        return idMarca;
+    public Long getId() {
+        return id;
     }
 
-    public String getNomeMarca() {
-        return nomeMarca;
+    public String getNome() {
+        return nome;
     }
 
     public String getUrlLogo() {
         return urlLogo;
     }
 
-    public void setNomeMarca(String nomeMarca) {
-        this.nomeMarca = nomeMarca;
+    public void setNome(String nome) {
+        this.nome = nome;
     }
 
     public void setUrlLogo(String urlLogo) {

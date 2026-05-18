@@ -13,27 +13,26 @@ public class CategoriaEquip {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ID_CATEGORIA")
-    private Long idCategoria;
+    private Long id;
 
-    @Column(name = "NOME_CATEGORIA", nullable = false, length = 50)
-    private String nomeCategoria;
+    @Column(name = "NOME", nullable = false, length = 50)
+    private String nome;
 
     protected CategoriaEquip() {}
 
-    public CategoriaEquip(String nomeCategoria) {
-        this.nomeCategoria = nomeCategoria;
+    public CategoriaEquip(String nome) {
+        this.nome = nome;
     }
 
-    public Long getIdCategoria() {
-        return idCategoria;
+    public Long getId() {
+        return id;
     }
 
-    public String getNomeCategoria() {
-        return nomeCategoria;
+    public String getNome() {
+        return nome;
     }
 
-    public void setNomeCategoria(String nomeCategoria) {
-        this.nomeCategoria = nomeCategoria;
+    public void setNome(String nome) {
+        this.nome = nome;
     }
 }

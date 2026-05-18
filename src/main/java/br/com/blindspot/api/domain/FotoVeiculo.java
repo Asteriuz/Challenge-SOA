@@ -16,11 +16,10 @@ public class FotoVeiculo {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ID_FOTO")
-    private Long idFoto;
+    private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "ID_VERSAO", nullable = false, foreignKey = @ForeignKey(name = "FK_FOTO_VERSAO"))
+    @JoinColumn(name = "VERSAO_ID", nullable = false, foreignKey = @ForeignKey(name = "FK_FOTO_VERSAO"))
     private Versao versao;
 
     @Column(name = "URL_FOTO", nullable = false, length = 500)
@@ -37,8 +36,8 @@ public class FotoVeiculo {
         this.isPrincipal = false;
     }
 
-    public Long getIdFoto() {
-        return idFoto;
+    public Long getId() {
+        return id;
     }
 
     public Versao getVersao() {

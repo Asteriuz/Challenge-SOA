@@ -1,0 +1,47 @@
+package br.com.blindspot.api.controller;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import br.com.blindspot.api.dto.response.VersaoDetalhesDTO;
+import br.com.blindspot.api.dto.response.VersaoResumoDTO;
+import br.com.blindspot.api.service.VersaoService;
+import io.swagger.v3.oas.annotations.tags.Tag;
+
+@RestController
+@Tag(name = "Veículos")
+@RequestMapping("/api/v1/veiculos")
+public class VeiculoController {
+
+    @Autowired
+    private VersaoService versaoService;
+
+    @GetMapping("/busca")
+    public ResponseEntity<List<VersaoResumoDTO>> buscar(
+            @RequestParam(required = false) Long marcaId,
+            @RequestParam(required = false) Long modeloId,
+            @RequestParam(required = false) Integer ano,
+            @RequestParam(required = false) Long versaoId) {
+        List<VersaoResumoDTO> resultados = versaoService.buscarVersoes(marcaId, modeloId, ano, versaoId);
+        return ResponseEntity.ok(resultados);
+    }
+
+    @GetMapping("/{idVersao}")
+    public ResponseEntity<VersaoDetalhesDTO> obterDetalhes(@PathVariable Long idVersao) {
+        VersaoDetalhesDTO detalhes = versaoService.obterDetalhesVersao(idVersao);
+        return ResponseEntity.ok(detalhes);
+    }
+
+    @GetMapping("/{idVersao}/mais-comparados")
+    public ResponseEntity<List<VersaoResumoDTO>> obterMaisComparados(@PathVariable Long idVersao) {
+        List<VersaoResumoDTO> maisComparados = versaoService.obterMaisComparados(idVersao);
+        return ResponseEntity.ok(maisComparados);
+    }
+}

@@ -16,12 +16,12 @@ import jakarta.persistence.Table;
 public class EspecDesempenho {
 
     @Id
-    @Column(name = "ID_VERSAO")
-    private Long idVersao;
+    @Column(name = "VERSAO_ID")
+    private Long versaoId;
 
     @OneToOne
     @MapsId
-    @JoinColumn(name = "ID_VERSAO", nullable = false, foreignKey = @ForeignKey(name = "FK_DESEMP_VERSAO"))
+    @JoinColumn(name = "VERSAO_ID", nullable = false, foreignKey = @ForeignKey(name = "FK_DESEMP_VERSAO"))
     private Versao versao;
 
     @Column(name = "ACELERACAO_0_100", precision = 4, scale = 1)
@@ -37,11 +37,11 @@ public class EspecDesempenho {
 
     public EspecDesempenho(Versao versao) {
         this.versao = versao;
-        this.idVersao = versao.getIdVersao();
+        this.versaoId = versao.getId();
     }
 
-    public Long getIdVersao() {
-        return idVersao;
+    public Long getVersaoId() {
+        return versaoId;
     }
 
     public Versao getVersao() {

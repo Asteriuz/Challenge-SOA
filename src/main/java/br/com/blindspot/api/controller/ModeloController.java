@@ -1,0 +1,38 @@
+package br.com.blindspot.api.controller;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import br.com.blindspot.api.dto.response.VersaoResumoDTO;
+import br.com.blindspot.api.service.VersaoService;
+import io.swagger.v3.oas.annotations.tags.Tag;
+
+@RestController
+@Tag(name = "Modelos")
+@RequestMapping("/api/v1/modelos")
+public class ModeloController {
+
+    @Autowired
+    private VersaoService versaoService;
+
+    @GetMapping("/{modeloId}/anos")
+    public ResponseEntity<List<Integer>> obterAnosFabricacao(@PathVariable Long modeloId) {
+        List<Integer> anos = versaoService.obterAnosFabricacao(modeloId);
+        return ResponseEntity.ok(anos);
+    }
+
+    @GetMapping("/{modeloId}/versoes")
+    public ResponseEntity<List<VersaoResumoDTO>> obterVersoes(
+            @PathVariable Long modeloId,
+            @RequestParam(required = false) Integer ano) {
+        List<VersaoResumoDTO> versoes = versaoService.buscarVersoes(null, modeloId, ano, null);
+        return ResponseEntity.ok(versoes);
+    }
+}

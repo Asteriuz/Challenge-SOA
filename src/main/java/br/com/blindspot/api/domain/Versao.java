@@ -22,15 +22,14 @@ public class Versao {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ID_VERSAO")
-    private Long idVersao;
+    private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "ID_MODELO", nullable = false, foreignKey = @ForeignKey(name = "FK_VERSAO_MODELO"))
+    @JoinColumn(name = "MODELO_ID", nullable = false, foreignKey = @ForeignKey(name = "FK_VERSAO_MODELO"))
     private Modelo modelo;
 
-    @Column(name = "NOME_VERSAO", nullable = false, length = 150)
-    private String nomeVersao;
+    @Column(name = "NOME", nullable = false, length = 150)
+    private String nome;
 
     @Column(name = "ANO_FABRICACAO", nullable = false)
     private Integer anoFabricacao;
@@ -38,8 +37,8 @@ public class Versao {
     @Column(name = "ANO_MODELO", nullable = false)
     private Integer anoModelo;
 
-    @Column(name = "PRECO_ATUAL", precision = 12, scale = 2)
-    private BigDecimal precoAtual;
+    @Column(name = "PRECO", precision = 12, scale = 2)
+    private BigDecimal preco;
 
     @Column(name = "NOTA_MEDIA", precision = 3, scale = 2)
     private BigDecimal notaMedia;
@@ -50,32 +49,32 @@ public class Versao {
     @ManyToMany
     @JoinTable(
         name = "BS_VERSAO_EQUIPAMENTO",
-        joinColumns = @JoinColumn(name = "ID_VERSAO", foreignKey = @ForeignKey(name = "FK_VE_VERSAO")),
-        inverseJoinColumns = @JoinColumn(name = "ID_EQUIPAMENTO", foreignKey = @ForeignKey(name = "FK_VE_EQUIP"))
+        joinColumns = @JoinColumn(name = "VERSAO_ID", foreignKey = @ForeignKey(name = "FK_VE_VERSAO")),
+        inverseJoinColumns = @JoinColumn(name = "EQUIPAMENTO_ID", foreignKey = @ForeignKey(name = "FK_VE_EQUIP"))
     )
     private Set<Equipamento> equipamentos = new HashSet<>();
 
     protected Versao() {}
 
-    public Versao(Modelo modelo, String nomeVersao, Integer anoFabricacao, Integer anoModelo) {
+    public Versao(Modelo modelo, String nome, Integer anoFabricacao, Integer anoModelo) {
         this.modelo = modelo;
-        this.nomeVersao = nomeVersao;
+        this.nome = nome;
         this.anoFabricacao = anoFabricacao;
         this.anoModelo = anoModelo;
         this.notaMedia = BigDecimal.ZERO;
         this.qtdAvaliacoes = 0L;
     }
 
-    public Long getIdVersao() {
-        return idVersao;
+    public Long getId() {
+        return id;
     }
 
     public Modelo getModelo() {
         return modelo;
     }
 
-    public String getNomeVersao() {
-        return nomeVersao;
+    public String getNome() {
+        return nome;
     }
 
     public Integer getAnoFabricacao() {
@@ -86,8 +85,8 @@ public class Versao {
         return anoModelo;
     }
 
-    public BigDecimal getPrecoAtual() {
-        return precoAtual;
+    public BigDecimal getPreco() {
+        return preco;
     }
 
     public BigDecimal getNotaMedia() {
@@ -102,12 +101,12 @@ public class Versao {
         this.modelo = modelo;
     }
 
-    public void setNomeVersao(String nomeVersao) {
-        this.nomeVersao = nomeVersao;
+    public void setNome(String nome) {
+        this.nome = nome;
     }
 
-    public void setPrecoAtual(BigDecimal precoAtual) {
-        this.precoAtual = precoAtual;
+    public void setPreco(BigDecimal preco) {
+        this.preco = preco;
     }
 
     public void setNotaMedia(BigDecimal notaMedia) {

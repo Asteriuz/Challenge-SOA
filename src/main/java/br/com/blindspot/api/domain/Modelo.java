@@ -16,40 +16,39 @@ public class Modelo {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ID_MODELO")
-    private Long idModelo;
+    private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "ID_MARCA", nullable = false, foreignKey = @ForeignKey(name = "FK_MODELO_MARCA"))
+    @JoinColumn(name = "MARCA_ID", nullable = false, foreignKey = @ForeignKey(name = "FK_MODELO_MARCA"))
     private Marca marca;
 
-    @Column(name = "NOME_MODELO", nullable = false, length = 100)
-    private String nomeModelo;
+    @Column(name = "NOME", nullable = false, length = 100)
+    private String nome;
 
     protected Modelo() {}
 
-    public Modelo(Marca marca, String nomeModelo) {
+    public Modelo(Marca marca, String nome) {
         this.marca = marca;
-        this.nomeModelo = nomeModelo;
+        this.nome = nome;
     }
 
-    public Long getIdModelo() {
-        return idModelo;
+    public Long getId() {
+        return id;
     }
 
     public Marca getMarca() {
         return marca;
     }
 
-    public String getNomeModelo() {
-        return nomeModelo;
+    public String getNome() {
+        return nome;
     }
 
     public void setMarca(Marca marca) {
         this.marca = marca;
     }
 
-    public void setNomeModelo(String nomeModelo) {
-        this.nomeModelo = nomeModelo;
+    public void setNome(String nome) {
+        this.nome = nome;
     }
 }

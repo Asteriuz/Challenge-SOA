@@ -14,12 +14,12 @@ import jakarta.persistence.Table;
 public class EspecDimensao {
 
     @Id
-    @Column(name = "ID_VERSAO")
-    private Long idVersao;
+    @Column(name = "VERSAO_ID")
+    private Long versaoId;
 
     @OneToOne
     @MapsId
-    @JoinColumn(name = "ID_VERSAO", nullable = false, foreignKey = @ForeignKey(name = "FK_DIMENS_VERSAO"))
+    @JoinColumn(name = "VERSAO_ID", nullable = false, foreignKey = @ForeignKey(name = "FK_DIMENS_VERSAO"))
     private Versao versao;
 
     @Column(name = "COMPRIMENTO_MM")
@@ -44,11 +44,11 @@ public class EspecDimensao {
 
     public EspecDimensao(Versao versao) {
         this.versao = versao;
-        this.idVersao = versao.getIdVersao();
+        this.versaoId = versao.getId();
     }
 
-    public Long getIdVersao() {
-        return idVersao;
+    public Long getVersaoId() {
+        return versaoId;
     }
 
     public Versao getVersao() {
