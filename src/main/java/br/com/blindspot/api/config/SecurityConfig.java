@@ -40,14 +40,8 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
 
-                        .requestMatchers(HttpMethod.POST, "/api/v1/auth/login").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/api/v1/auth/cadastro").permitAll()
-
-                        // 3. (Opcional) Regras específicas para o endpoint de busca da concorrência
-                        // Se você quiser que só Admins usem a busca, descomente a linha abaixo e
-                        // comente a anyRequest
-                        // .requestMatchers(HttpMethod.POST,
-                        // "/api/v1/specifications/search").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.POST, "/api/auth/login").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/auth/cadastro").permitAll()
 
                         .anyRequest().authenticated())
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)

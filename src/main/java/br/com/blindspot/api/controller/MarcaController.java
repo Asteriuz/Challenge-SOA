@@ -18,7 +18,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 
 @RestController
 @Tag(name = "Marcas")
-@RequestMapping("/api/v1/marcas")
+@RequestMapping("/api/marcas")
 public class MarcaController {
 
     @Autowired

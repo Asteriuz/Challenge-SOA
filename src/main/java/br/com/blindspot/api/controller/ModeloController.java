@@ -16,15 +16,15 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 
 @RestController
 @Tag(name = "Modelos")
-@RequestMapping("/api/v1/modelos")
+@RequestMapping("/api/modelos")
 public class ModeloController {
 
     @Autowired
     private VersaoService versaoService;
 
     @GetMapping("/{modeloId}/anos")
-    public ResponseEntity<List<Integer>> obterAnosFabricacao(@PathVariable Long modeloId) {
-        List<Integer> anos = versaoService.obterAnosFabricacao(modeloId);
+    public ResponseEntity<List<Integer>> obterAnosModelo(@PathVariable Long modeloId) {
+        List<Integer> anos = versaoService.obterAnosModelo(modeloId);
         return ResponseEntity.ok(anos);
     }
 

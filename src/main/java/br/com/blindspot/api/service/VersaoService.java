@@ -55,26 +55,34 @@ public class VersaoService {
 
         if (versaoId != null) {
             versoes = versaoRepository.findById(versaoId)
-                .map(List::of)
-                .orElse(List.of());
+                    .map(List::of)
+                    .orElse(List.of());
         } else if (marcaId != null && modeloId != null && anoModelo != null) {
             versoes = versaoRepository.buscarVersoes(marcaId, modeloId, anoModelo);
+        } else if (marcaId != null && modeloId != null) {
+            versoes = versaoRepository.findByModeloMarcaIdAndModeloId(marcaId, modeloId);
+        } else if (marcaId != null && anoModelo != null) {
+            versoes = versaoRepository.findByModeloMarcaIdAndAnoModelo(marcaId, anoModelo);
         } else if (modeloId != null && anoModelo != null) {
             versoes = versaoRepository.findByModeloIdAndAnoModelo(modeloId, anoModelo);
+        } else if (marcaId != null) {
+            versoes = versaoRepository.findByModeloMarcaId(marcaId);
         } else if (modeloId != null) {
             versoes = versaoRepository.findByModeloId(modeloId);
+        } else if (anoModelo != null) {
+            versoes = versaoRepository.findByAnoModelo(anoModelo);
         } else {
             versoes = versaoRepository.findAll();
         }
 
         return versoes.stream()
-            .map(this::convertToResumoDTO)
-            .collect(Collectors.toList());
+                .map(this::convertToResumoDTO)
+                .collect(Collectors.toList());
     }
 
     public VersaoDetalhesDTO obterDetalhesVersao(Long idVersao) {
         Versao versao = versaoRepository.findById(idVersao)
-            .orElseThrow(() -> new IllegalArgumentException("Versão não encontrada com ID: " + idVersao));
+                .orElseThrow(() -> new IllegalArgumentException("Versão não encontrada com ID: " + idVersao));
 
         EspecMotor motor = especMotorRepository.findById(idVersao).orElse(null);
         EspecTransmissao transmissao = especTransmissaoRepository.findById(idVersao).orElse(null);
@@ -109,21 +117,19 @@ public class VersaoService {
 
         detalhes.setEquipamentos(obterEquipamentosCategorizados(versao));
         detalhes.setFotos(fotos.stream()
-            .map(f -> new FotoVeiculoDTO(f.getUrlFoto(), f.getIsPrincipal()))
-            .collect(Collectors.toList()));
+                .map(f -> new FotoVeiculoDTO(f.getUrlFoto(), f.getIsPrincipal()))
+                .collect(Collectors.toList()));
 
         return detalhes;
     }
 
     public List<VersaoResumoDTO> obterMaisComparados(Long idVersao) {
-        return obterDetalhesVersao(idVersao) != null ? 
-            versaoRepository.findAll()
+        return obterDetalhesVersao(idVersao) != null ? versaoRepository.findAll()
                 .stream()
                 .filter(v -> !v.getId().equals(idVersao))
                 .limit(10)
                 .map(this::convertToResumoDTO)
-                .collect(Collectors.toList()) : 
-            List.of();
+                .collect(Collectors.toList()) : List.of();
     }
 
     public List<Integer> obterAnosFabricacao(Long modeloId) {
@@ -138,70 +144,62 @@ public class VersaoService {
         FotoVeiculo fotoPrincipal = fotoVeiculoRepository.findByVersaoIdAndIsPrincipalTrue(versao.getId());
 
         return new VersaoResumoDTO(
-            versao.getId(),
-            versao.getNome(),
-            versao.getAnoModelo(),
-            versao.getPreco(),
-            fotoPrincipal != null ? fotoPrincipal.getUrlFoto() : null,
-            versao.getModelo().getNome(),
-            versao.getModelo().getMarca().getNome()
-        );
+                versao.getId(),
+                versao.getNome(),
+                versao.getAnoModelo(),
+                versao.getPreco(),
+                fotoPrincipal != null ? fotoPrincipal.getUrlFoto() : null,
+                versao.getModelo().getNome(),
+                versao.getModelo().getMarca().getNome());
     }
 
     private EspecMotorDTO convertMotorToDTO(EspecMotor motor) {
         return new EspecMotorDTO(
-            motor.getTipoMotor(),
-            motor.getPotenciaCv(),
-            motor.getTorqueKgfm(),
-            motor.getCombustivel(),
-            motor.getValvulas(),
-            motor.getConsumoCidade(),
-            motor.getConsumoEstrada()
-        );
+                motor.getTipoMotor(),
+                motor.getPotenciaCv(),
+                motor.getTorqueKgfm(),
+                motor.getCombustivel(),
+                motor.getValvulas(),
+                motor.getConsumoCidade(),
+                motor.getConsumoEstrada());
     }
 
     private EspecTransmissaoDTO convertTransmissaoToDTO(EspecTransmissao transmissao) {
         return new EspecTransmissaoDTO(
-            transmissao.getTipoTransmissao(),
-            transmissao.getMarchas(),
-            transmissao.getTracao(),
-            transmissao.getDiferencial()
-        );
+                transmissao.getTipoTransmissao(),
+                transmissao.getMarchas(),
+                transmissao.getTracao(),
+                transmissao.getDiferencial());
     }
 
     private EspecDesempenhoDTO convertDesempenhoToDTO(EspecDesempenho desempenho) {
         return new EspecDesempenhoDTO(
-            desempenho.getAceleracao0100(),
-            desempenho.getVelocidadeMax(),
-            desempenho.getModosConducao()
-        );
+                desempenho.getAceleracao0100(),
+                desempenho.getVelocidadeMax(),
+                desempenho.getModosConducao());
     }
 
     private EspecDimensaoDTO convertDimensaoToDTO(EspecDimensao dimensao) {
         return new EspecDimensaoDTO(
-            dimensao.getComprimentoMm(),
-            dimensao.getLarguraMm(),
-            dimensao.getAlturaMm(),
-            dimensao.getEntreEixosMm(),
-            dimensao.getPesoKg(),
-            dimensao.getCapacidadeCarga()
-        );
+                dimensao.getComprimentoMm(),
+                dimensao.getLarguraMm(),
+                dimensao.getAlturaMm(),
+                dimensao.getEntreEixosMm(),
+                dimensao.getPesoKg(),
+                dimensao.getCapacidadeCarga());
     }
 
     private EquipamentosCategoriadosDTO obterEquipamentosCategorizados(Versao versao) {
         Map<String, List<EquipamentoDTO>> equipamentosPorCategoria = versao.getEquipamentos()
-            .stream()
-            .collect(Collectors.groupingBy(
-                equip -> equip.getCategoria().getNome(),
-                Collectors.mapping(
-                    equip -> new EquipamentoDTO(
-                        equip.getId(),
-                        equip.getDescricao(),
-                        equip.getCategoria().getNome()
-                    ),
-                    Collectors.toList()
-                )
-            ));
+                .stream()
+                .collect(Collectors.groupingBy(
+                        equip -> equip.getCategoria().getNome(),
+                        Collectors.mapping(
+                                equip -> new EquipamentoDTO(
+                                        equip.getId(),
+                                        equip.getDescricao(),
+                                        equip.getCategoria().getNome()),
+                                Collectors.toList())));
 
         return new EquipamentosCategoriadosDTO(equipamentosPorCategoria);
     }
