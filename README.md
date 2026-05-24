@@ -156,27 +156,6 @@ A BlindSpot API foi desenvolvida para fornecer uma experiência completa na busc
 
 </details>
 
-<hr/>
-
-**💡 Fluxo Completo:**
-```
-1. Usuário faz login (POST /api/auth/login) → Recebe JWT Token
-   ↓
-2. Busca marcas populares (GET /api/marcas?populares=true)
-   ↓
-3. Seleciona marca e busca modelos (GET /api/marcas/{marcaId}/modelos)
-   ↓
-4. Seleciona modelo e lista anos (GET /api/modelos/{modeloId}/anos)
-   ↓
-5. Seleciona ano e lista versões (GET /api/modelos/{modeloId}/versoes)
-   ↓
-6. Realiza busca com filtros (GET /api/veiculos/busca?...)
-   ↓
-7. Clica em um veículo para ver detalhes (GET /api/veiculos/{idVersao})
-   ↓
-8. Visualiza sugestões de comparação (GET /api/veiculos/{idVersao}/mais-comparados)
-```
-
 <h2 id="endpoints">🌐 Endpoints Principais</h2>
 
 | Método | Endpoint | Descrição | Autenticação |
